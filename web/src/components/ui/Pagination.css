@@ -1,0 +1,97 @@
+/* ========== Pagination Container ========== */
+.ui-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
+  flex-wrap: wrap;
+}
+
+/* ========== Pagination Info ========== */
+.ui-pagination__info {
+  color: var(--color-text-muted);
+}
+
+/* ========== Page Size Selector ========== */
+.ui-pagination__page-size {
+  min-width: 120px;
+}
+
+/* ========== Navigation ========== */
+.ui-pagination__navigation {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+/* ========== Pages ========== */
+.ui-pagination__pages {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.ui-pagination__page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 var(--spacing-2);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  outline: none;
+}
+
+.ui-pagination__page:hover:not(.ui-pagination__page--active) {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-border-hover);
+}
+
+.ui-pagination__page--active {
+  background-color: var(--color-primary);
+  color: var(--on-primary);
+  border-color: var(--color-primary);
+}
+
+.ui-pagination__page:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.ui-pagination__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+/* ========== Mobile Responsive ========== */
+@media (max-width: 768px) {
+  .ui-pagination {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ui-pagination__info {
+    text-align: center;
+  }
+
+  .ui-pagination__navigation {
+    justify-content: center;
+  }
+
+  .ui-pagination__page-size {
+    width: 100%;
+  }
+}

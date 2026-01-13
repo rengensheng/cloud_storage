@@ -1,0 +1,238 @@
+/* ========== Menu Container ========== */
+.ui-menu {
+  position: relative;
+  display: inline-block;
+}
+
+/* ========== Menu Items Container ========== */
+.ui-menu__items {
+  position: absolute;
+  min-width: 200px;
+  max-width: 320px;
+  margin-top: var(--spacing-2);
+  padding: var(--spacing-2) 0;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  z-index: 50;
+  outline: none;
+  overflow: hidden;
+}
+
+/* ========== Menu Positioning ========== */
+.ui-menu--bottom-start {
+  left: 0;
+}
+
+.ui-menu--bottom-end {
+  right: 0;
+}
+
+.ui-menu--top-start {
+  left: 0;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: var(--spacing-2);
+}
+
+.ui-menu--top-end {
+  right: 0;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: var(--spacing-2);
+}
+
+/* ========== Menu Item ========== */
+.ui-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: 14px;
+  color: var(--color-text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+  position: relative;
+  white-space: nowrap;
+}
+
+.ui-menu__item--focus {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.ui-menu__item--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.ui-menu__item--danger {
+  color: var(--color-danger);
+}
+
+.ui-menu__item--danger.ui-menu__item--focus {
+  background-color: var(--color-danger-light);
+  color: var(--color-danger);
+}
+
+.ui-menu__item--has-submenu {
+  padding-right: var(--spacing-8);
+}
+
+/* ========== Menu Item Icon ========== */
+.ui-menu__item-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-muted);
+}
+
+.ui-menu__item--focus .ui-menu__item-icon {
+  color: var(--color-primary);
+}
+
+.ui-menu__item--danger .ui-menu__item-icon {
+  color: var(--color-danger);
+}
+
+/* ========== Menu Item Label ========== */
+.ui-menu__item-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ========== Menu Item Shortcut ========== */
+.ui-menu__item-shortcut {
+  margin-left: auto;
+  padding-left: var(--spacing-4);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-family: monospace;
+}
+
+.ui-menu__item--focus .ui-menu__item-shortcut {
+  color: var(--color-primary);
+}
+
+/* ========== Menu Item Check ========== */
+.ui-menu__item-check {
+  margin-left: auto;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+/* ========== Menu Divider ========== */
+.ui-menu__divider {
+  height: 1px;
+  margin: var(--spacing-2) 0;
+  background-color: var(--color-border);
+}
+
+/* ========== Submenu ========== */
+.ui-menu__submenu-wrapper {
+  position: relative;
+}
+
+.ui-menu__submenu-arrow {
+  position: absolute;
+  right: var(--spacing-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.ui-menu__item--focus .ui-menu__submenu-arrow {
+  color: var(--color-primary);
+}
+
+.ui-menu__items--submenu {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  margin-top: 0;
+  margin-left: var(--spacing-1);
+}
+
+/* If submenu would overflow right edge, position it to the left */
+.ui-menu__submenu-wrapper:hover .ui-menu__items--submenu {
+  display: block;
+}
+
+/* ========== Transitions ========== */
+.ui-menu__transition-enter {
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ui-menu__transition-enter-from {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.ui-menu__transition-enter-to {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ui-menu__transition-leave {
+  transition: all 100ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+.ui-menu__transition-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ui-menu__transition-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* ========== Menu Group (Optional) ========== */
+.ui-menu__group {
+  padding: var(--spacing-2) 0;
+}
+
+.ui-menu__group-label {
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ========== Mobile Responsive ========== */
+@media (max-width: 768px) {
+  .ui-menu__items {
+    min-width: 180px;
+    max-width: 280px;
+  }
+
+  .ui-menu__item {
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: 13px;
+  }
+
+  .ui-menu__item-shortcut {
+    display: none;
+  }
+}
+
+/* ========== Dark Mode Enhancements ========== */
+[class*="theme-slate-dark"] .ui-menu__items,
+[class*="theme-midnight-purple"] .ui-menu__items,
+[class*="theme-cyber-neon"] .ui-menu__items {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}

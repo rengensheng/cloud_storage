@@ -1,0 +1,77 @@
+/* ========== Switch Group ========== */
+.ui-switch-group {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+/* ========== Switch ========== */
+.ui-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 44px;
+  height: 24px;
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  flex-shrink: 0;
+  border: none;
+  outline: none;
+  padding: 0;
+}
+
+.ui-switch:hover:not(.ui-switch--disabled) {
+  background-color: var(--color-border-hover);
+}
+
+.ui-switch--checked {
+  background-color: var(--color-primary);
+}
+
+.ui-switch--checked:hover:not(.ui-switch--disabled) {
+  background-color: var(--color-primary-hover);
+}
+
+.ui-switch--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ========== Switch Thumb ========== */
+.ui-switch__thumb {
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-surface);
+  border-radius: 50%;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+  pointer-events: none;
+}
+
+.ui-switch--checked .ui-switch__thumb {
+  transform: translateX(20px) translateY(-50%);
+}
+
+/* ========== Switch Label ========== */
+.ui-switch-label {
+  font-size: 14px;
+  color: var(--color-text);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ui-switch--disabled ~ .ui-switch-label {
+  cursor: not-allowed;
+}
+
+/* ========== Focus Styles ========== */
+.ui-switch:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

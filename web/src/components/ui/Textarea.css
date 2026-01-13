@@ -1,0 +1,112 @@
+/* ========== Textarea Wrapper ========== */
+.ui-textarea-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  width: 100%;
+}
+
+/* ========== Label ========== */
+.ui-textarea-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-1);
+}
+
+/* ========== Textarea Base ========== */
+.ui-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: var(--spacing-3);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: all var(--transition-base);
+}
+
+.ui-textarea::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.6;
+}
+
+.ui-textarea:hover:not(:disabled) {
+  border-color: var(--color-border-hover);
+}
+
+.ui-textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+/* ========== Resize Options ========== */
+.ui-textarea--resize-none {
+  resize: none;
+}
+
+.ui-textarea--resize-vertical {
+  resize: vertical;
+}
+
+.ui-textarea--resize-horizontal {
+  resize: horizontal;
+}
+
+.ui-textarea--resize-both {
+  resize: both;
+}
+
+/* ========== Textarea States ========== */
+.ui-textarea--error {
+  border-color: var(--color-danger);
+}
+
+.ui-textarea--error:focus {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px var(--color-danger-light);
+}
+
+.ui-textarea--success {
+  border-color: var(--color-success);
+}
+
+.ui-textarea--success:focus {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 3px var(--color-success-light);
+}
+
+.ui-textarea--disabled {
+  background-color: var(--color-surface-hover);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.ui-textarea:disabled {
+  cursor: not-allowed;
+}
+
+/* ========== Helper Text ========== */
+.ui-textarea-helper {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: var(--spacing-1);
+}
+
+.ui-textarea-helper--error {
+  color: var(--color-danger);
+}
+
+.ui-textarea-helper--success {
+  color: var(--color-success);
+}
+
+/* ========== Focus Visible ========== */
+.ui-textarea:focus-visible {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}

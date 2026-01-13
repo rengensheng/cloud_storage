@@ -1,0 +1,37 @@
+/* ========== Container Base ========== */
+.ui-container {
+  width: 100%;
+}
+
+/* ========== Max Width Variants ========== */
+.ui-container--small {
+  max-width: 640px;
+}
+
+.ui-container--medium {
+  max-width: 980px;
+}
+
+.ui-container--large {
+  max-width: 1280px;
+}
+
+/* ========== Padding ========== */
+.ui-container--padding {
+  padding-left: var(--spacing-6);
+  padding-right: var(--spacing-6);
+}
+
+/* ========== Center ========== */
+.ui-container--center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ========== Mobile Responsive ========== */
+@media (max-width: 600px) {
+  .ui-container--padding {
+    padding-left: var(--spacing-4);
+    padding-right: var(--spacing-4);
+  }
+}

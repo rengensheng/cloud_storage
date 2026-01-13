@@ -1,0 +1,63 @@
+/* ========== Checkbox Wrapper ========== */
+.ui-checkbox-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ui-checkbox-wrapper[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ========== Checkbox Box ========== */
+.ui-checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-base);
+  flex-shrink: 0;
+}
+
+.ui-checkbox:hover:not(.ui-checkbox--disabled) {
+  border-color: var(--color-primary);
+}
+
+.ui-checkbox--checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.ui-checkbox--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ========== Checkbox Icon ========== */
+.ui-checkbox__icon {
+  width: 14px;
+  height: 14px;
+  color: var(--on-primary);
+  stroke-width: 3;
+}
+
+/* ========== Checkbox Label ========== */
+.ui-checkbox-label {
+  font-size: 14px;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+/* ========== Focus Styles ========== */
+.ui-checkbox-wrapper:focus-visible .ui-checkbox {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

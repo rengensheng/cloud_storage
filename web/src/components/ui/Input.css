@@ -1,0 +1,128 @@
+/* ========== Input Wrapper ========== */
+.ui-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  width: 100%;
+}
+
+/* ========== Label ========== */
+.ui-input-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-1);
+}
+
+/* ========== Input Container ========== */
+.ui-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* ========== Input Base ========== */
+.ui-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--spacing-3);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: all var(--transition-base);
+}
+
+.ui-input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.6;
+}
+
+.ui-input:hover:not(:disabled) {
+  border-color: var(--color-border-hover);
+}
+
+.ui-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+/* ========== Input with Icons ========== */
+.ui-input--has-icon {
+  padding-left: var(--spacing-10);
+}
+
+.ui-input__icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.ui-input__icon--left {
+  left: var(--spacing-3);
+}
+
+.ui-input__icon--right {
+  right: var(--spacing-3);
+}
+
+.ui-input__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ========== Input States ========== */
+.ui-input--error {
+  border-color: var(--color-danger);
+}
+
+.ui-input--error:focus {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px var(--color-danger-light);
+}
+
+.ui-input--success {
+  border-color: var(--color-success);
+}
+
+.ui-input--success:focus {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 3px var(--color-success-light);
+}
+
+.ui-input--disabled {
+  background-color: var(--color-surface-hover);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.ui-input:disabled {
+  cursor: not-allowed;
+}
+
+/* ========== Helper Text ========== */
+.ui-input-helper {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: var(--spacing-1);
+}
+
+.ui-input-helper--error {
+  color: var(--color-danger);
+}
+
+.ui-input-helper--success {
+  color: var(--color-success);
+}
+
+/* ========== Focus Visible ========== */
+.ui-input:focus-visible {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}

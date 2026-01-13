@@ -1,0 +1,80 @@
+/* ========== Dropdown Container ========== */
+.ui-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* ========== Dropdown Trigger ========== */
+.ui-dropdown-trigger {
+  all: unset;
+  cursor: pointer;
+}
+
+/* ========== Dropdown Items Wrapper ========== */
+.ui-dropdown-items-wrapper {
+  position: absolute;
+  right: 0;
+  z-index: var(--z-dropdown);
+  margin-top: var(--spacing-1);
+  min-width: 200px;
+}
+
+/* ========== Dropdown Items ========== */
+.ui-dropdown-items {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--spacing-1);
+  outline: none;
+}
+
+/* ========== Dropdown Item ========== */
+.ui-dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  font-size: 14px;
+  color: var(--color-text);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+  outline: none;
+}
+
+.ui-dropdown-item:hover:not(.ui-dropdown-item--disabled) {
+  background-color: var(--color-surface-hover);
+}
+
+.ui-dropdown-item--active {
+  background-color: var(--color-primary-light);
+}
+
+.ui-dropdown-item--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.ui-dropdown-item__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ui-dropdown-item__icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.ui-dropdown-item__text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

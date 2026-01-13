@@ -1,0 +1,139 @@
+/* ========== Dialog Container ========== */
+.ui-dialog-container {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+}
+
+/* ========== Backdrop ========== */
+.ui-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* ========== Dialog Wrapper ========== */
+.ui-dialog-wrapper {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-4);
+  overflow-y: auto;
+}
+
+.ui-dialog-content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  width: 100%;
+}
+
+/* ========== Dialog Panel ========== */
+.ui-dialog-panel {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ========== Dialog Sizes ========== */
+.ui-dialog-panel--small {
+  max-width: 400px;
+}
+
+.ui-dialog-panel--medium {
+  max-width: 600px;
+}
+
+.ui-dialog-panel--large {
+  max-width: 800px;
+}
+
+/* ========== Dialog Header ========== */
+.ui-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ui-dialog-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.ui-dialog-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.ui-dialog-close:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.ui-dialog-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ========== Dialog Body ========== */
+.ui-dialog-body {
+  padding: var(--spacing-6);
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* ========== Scrollbar Styles ========== */
+.ui-dialog-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ui-dialog-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ui-dialog-body::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+.ui-dialog-body::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-border-hover);
+}
+
+/* ========== Mobile Responsive ========== */
+@media (max-width: 600px) {
+  .ui-dialog-wrapper {
+    padding: var(--spacing-2);
+  }
+
+  .ui-dialog-panel {
+    max-height: 95vh;
+  }
+
+  .ui-dialog-header,
+  .ui-dialog-body {
+    padding: var(--spacing-4);
+  }
+}
