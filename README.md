@@ -91,10 +91,24 @@ cloud-storage/
 ├── go.mod                    # Go模块定义
 ├── go.sum                    # 依赖校验
 ├── docker-compose.yml        # Docker编排
-├── Dockerfile                # Docker构建文件
+├── Dockerfile                # Docker构建文件（后端）
+├── web/Dockerfile           # Docker构建文件（前端）
 ├── Makefile                  # 构建脚本
 └── README.md                 # 项目文档
 ```
+
+## Docker 快速开始
+
+```bash
+# 启动全部服务（前端 + 后端）
+make docker-up
+
+# 访问应用
+# 前端: http://localhost
+# 后端API: http://localhost:8080
+```
+
+详细Docker部署文档请参考 [DOCKER.md](DOCKER.md)
 
 ## 数据模型设计
 
@@ -394,11 +408,69 @@ kubectl apply -f k8s/
 
 ## 快速开始指南
 
+### 方式一：Docker 部署（推荐）
+
+#### 快速启动全部服务
+```bash
+# 启动前端和后端
+make docker-up
+
+# 访问应用
+# 前端: http://localhost
+# 后端API: http://localhost:8080
+```
+
+#### 仅启动后端
+```bash
+make docker-backend
+```
+
+#### 仅启动前端
+```bash
+make docker-frontend
+```
+
+详细的Docker部署文档请参考 [DOCKER.md](DOCKER.md)
+
+### 方式二：本地开发
+
 ### 第一步：准备环境
 ```bash
 # 安装Go 1.21+
 # 安装PostgreSQL 12+
 # 安装Redis 6+ (可选）
+```
+
+### 第二步：配置环境
+```bash
+cp .env.example .env
+# 编辑.env文件，配置数据库、Redis等
+```
+
+### 第三步：数据库迁移
+```bash
+# 运行迁移
+go run cmd/migrate/main.go
+```
+
+### 第四步：启动服务
+```bash
+# 启动PostgreSQL和Redis
+docker-compose up -d postgres redis
+
+# 启动应用
+go run cmd/server/main.go
+```
+
+### 第五步：访问服务
+```bash
+# 健康检查
+curl http://localhost:8080/health
+
+# 注册用户
+curl -X POST http://localhost:8080/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"test","email":"test@example.com","password":"password123"}'
 ```
 
 ### 第二步：配置环境

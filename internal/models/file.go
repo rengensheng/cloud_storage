@@ -19,28 +19,28 @@ const (
 
 // File 文件模型
 type File struct {
-	ID        uuid.UUID      `gorm:"type:uuid;primary_key;default:gen_random_uuid()" json:"id"`
-	UserID    uuid.UUID      `gorm:"type:uuid;not null;index" json:"user_id"`
-	ParentID  *uuid.UUID     `gorm:"type:uuid;index" json:"parent_id,omitempty"`
-	Name      string         `gorm:"type:varchar(255);not null" json:"name"`
-	Path      string         `gorm:"type:text;not null;index" json:"path"`
-	Size      int64          `gorm:"default:0" json:"size"`
-	MimeType  string         `gorm:"type:varchar(100)" json:"mime_type"`
-	Hash      string         `gorm:"type:varchar(64);index" json:"hash,omitempty"`
-	Type      FileType       `gorm:"type:varchar(20);not null" json:"type"`
-	IsPublic  bool           `gorm:"default:false" json:"is_public"`
-	ShareToken *string       `gorm:"type:varchar(32);uniqueIndex" json:"share_token,omitempty"`
-	Version   int            `gorm:"default:1" json:"version"`
-	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
-	CreatedAt time.Time      `gorm:"autoCreateTime" json:"created_at"`
-	UpdatedAt time.Time      `gorm:"autoUpdateTime" json:"updated_at"`
+	ID         uuid.UUID      `gorm:"type:uuid;primary_key;default:gen_random_uuid()" json:"id"`
+	UserID     uuid.UUID      `gorm:"type:uuid;not null;index" json:"user_id"`
+	ParentID   *uuid.UUID     `gorm:"type:uuid;index" json:"parent_id,omitempty"`
+	Name       string         `gorm:"type:varchar(255);not null" json:"name"`
+	Path       string         `gorm:"type:text;not null;index" json:"path"`
+	Size       int64          `gorm:"default:0" json:"size"`
+	MimeType   string         `gorm:"type:varchar(100)" json:"mime_type"`
+	Hash       string         `gorm:"type:varchar(64);index" json:"hash,omitempty"`
+	Type       FileType       `gorm:"type:varchar(20);not null" json:"type"`
+	IsPublic   bool           `gorm:"default:false" json:"is_public"`
+	ShareToken *string        `gorm:"type:varchar(32);uniqueIndex" json:"share_token,omitempty"`
+	Version    int            `gorm:"default:1" json:"version"`
+	DeletedAt  gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
+	CreatedAt  time.Time      `gorm:"autoCreateTime" json:"created_at"`
+	UpdatedAt  time.Time      `gorm:"autoUpdateTime" json:"updated_at"`
 
 	// 关联关系
-	User        User           `gorm:"foreignKey:UserID" json:"user,omitempty"`
-	Parent      *File          `gorm:"foreignKey:ParentID" json:"parent,omitempty"`
-	Children    []File         `gorm:"foreignKey:ParentID" json:"children,omitempty"`
-	Versions    []FileVersion  `gorm:"foreignKey:FileID" json:"versions,omitempty"`
-	Shares      []Share        `gorm:"foreignKey:FileID" json:"shares,omitempty"`
+	User     User          `gorm:"foreignKey:UserID" json:"user,omitempty"`
+	Parent   *File         `gorm:"foreignKey:ParentID" json:"parent,omitempty"`
+	Children []File        `gorm:"foreignKey:ParentID" json:"children,omitempty"`
+	Versions []FileVersion `gorm:"foreignKey:FileID" json:"versions,omitempty"`
+	Shares   []Share       `gorm:"foreignKey:FileID" json:"shares,omitempty"`
 }
 
 // TableName 指定表名
@@ -97,10 +97,10 @@ func (f *File) BuildPath() string {
 
 // FileCreateRequest 文件创建请求
 type FileCreateRequest struct {
-	Name     string    `json:"name" binding:"required"`
+	Name     string     `json:"name" binding:"required"`
 	ParentID *uuid.UUID `json:"parent_id,omitempty"`
-	Type     FileType  `json:"type" binding:"required,oneof=file directory"`
-	IsPublic bool      `json:"is_public,omitempty"`
+	Type     FileType   `json:"type" binding:"required,oneof=file directory"`
+	IsPublic bool       `json:"is_public,omitempty"`
 }
 
 // FileUpdateRequest 文件更新请求
@@ -112,29 +112,30 @@ type FileUpdateRequest struct {
 
 // FileUploadRequest 文件上传请求
 type FileUploadRequest struct {
-	ParentID *uuid.UUID `form:"parent_id"`
-	IsPublic bool       `form:"is_public"`
-	Override bool       `form:"override"`
+	ParentID    *uuid.UUID `form:"-"`
+	IsPublic    bool       `form:"is_public"`
+	Override    bool       `form:"override"`
+	ParentIDStr string     `form:"parent_id"`
 }
 
 // FileResponse 文件响应
 type FileResponse struct {
-	ID        uuid.UUID  `json:"id"`
-	Name      string     `json:"name"`
-	Path      string     `json:"path"`
-	Size      int64      `json:"size"`
-	MimeType  string     `json:"mime_type"`
-	Type      FileType   `json:"type"`
-	IsPublic  bool       `json:"is_public"`
-	ShareToken *string   `json:"share_token,omitempty"`
-	Version   int        `json:"version"`
-	UserID    uuid.UUID  `json:"user_id"`
-	ParentID  *uuid.UUID `json:"parent_id,omitempty"`
-	CreatedAt time.Time  `json:"created_at"`
-	UpdatedAt time.Time  `json:"updated_at"`
+	ID         uuid.UUID  `json:"id"`
+	Name       string     `json:"name"`
+	Path       string     `json:"path"`
+	Size       int64      `json:"size"`
+	MimeType   string     `json:"mime_type"`
+	Type       FileType   `json:"type"`
+	IsPublic   bool       `json:"is_public"`
+	ShareToken *string    `json:"share_token,omitempty"`
+	Version    int        `json:"version"`
+	UserID     uuid.UUID  `json:"user_id"`
+	ParentID   *uuid.UUID `json:"parent_id,omitempty"`
+	CreatedAt  time.Time  `json:"created_at"`
+	UpdatedAt  time.Time  `json:"updated_at"`
 
 	// 可选的关联数据
-	ChildrenCount int64 `json:"children_count,omitempty"`
+	ChildrenCount int64  `json:"children_count,omitempty"`
 	DownloadURL   string `json:"download_url,omitempty"`
 	PreviewURL    string `json:"preview_url,omitempty"`
 }
@@ -142,19 +143,19 @@ type FileResponse struct {
 // ToResponse 转换为响应格式
 func (f *File) ToResponse() FileResponse {
 	return FileResponse{
-		ID:        f.ID,
-		Name:      f.Name,
-		Path:      f.Path,
-		Size:      f.Size,
-		MimeType:  f.MimeType,
-		Type:      f.Type,
-		IsPublic:  f.IsPublic,
+		ID:         f.ID,
+		Name:       f.Name,
+		Path:       f.Path,
+		Size:       f.Size,
+		MimeType:   f.MimeType,
+		Type:       f.Type,
+		IsPublic:   f.IsPublic,
 		ShareToken: f.ShareToken,
-		Version:   f.Version,
-		UserID:    f.UserID,
-		ParentID:  f.ParentID,
-		CreatedAt: f.CreatedAt,
-		UpdatedAt: f.UpdatedAt,
+		Version:    f.Version,
+		UserID:     f.UserID,
+		ParentID:   f.ParentID,
+		CreatedAt:  f.CreatedAt,
+		UpdatedAt:  f.UpdatedAt,
 	}
 }
 
@@ -183,19 +184,21 @@ func (f *File) GetFullPath(storagePath string) string {
 
 // FileFilter 文件查询过滤器
 type FileFilter struct {
-	UserID    *uuid.UUID `form:"user_id"`
-	ParentID  *uuid.UUID `form:"parent_id"`
-	Name      *string    `form:"name"`
-	Type      *FileType  `form:"type"`
-	MimeType  *string    `form:"mime_type"`
-	IsPublic  *bool      `form:"is_public"`
-	Deleted   *bool      `form:"deleted"`
+	UserID        *uuid.UUID `form:"-"`
+	ParentID      *uuid.UUID `form:"-"`
+	UserIDStr     string     `form:"user_id"`
+	ParentIDStr   string     `form:"parent_id"`
+	Name          *string    `form:"name"`
+	Type          *FileType  `form:"type"`
+	MimeType      *string    `form:"mime_type"`
+	IsPublic      *bool      `form:"is_public"`
+	Deleted       *bool      `form:"deleted"`
 	CreatedAtFrom *time.Time `form:"created_at_from"`
 	CreatedAtTo   *time.Time `form:"created_at_to"`
-	Page      int        `form:"page" binding:"min=1"`
-	PageSize  int        `form:"page_size" binding:"min=1,max=100"`
-	SortBy    string     `form:"sort_by" binding:"oneof=name size created_at updated_at"`
-	SortOrder string     `form:"sort_order" binding:"oneof=asc desc"`
+	Page          int        `form:"page" binding:"omitempty,min=1"`
+	PageSize      int        `form:"page_size" binding:"omitempty,min=1,max=100"`
+	SortBy        string     `form:"sort_by" binding:"oneof=name size created_at updated_at"`
+	SortOrder     string     `form:"sort_order" binding:"oneof=asc desc"`
 }
 
 // ApplyFilter 应用过滤器到查询
@@ -261,11 +264,11 @@ func (f *FileFilter) ApplyFilter(db *gorm.DB) *gorm.DB {
 
 // FileStats 文件统计信息
 type FileStats struct {
-	TotalFiles    int64 `json:"total_files"`
-	TotalDirs     int64 `json:"total_dirs"`
-	TotalSize     int64 `json:"total_size"`
-	PublicFiles   int64 `json:"public_files"`
-	RecentFiles   int64 `json:"recent_files"` // 最近7天
+	TotalFiles  int64 `json:"total_files"`
+	TotalDirs   int64 `json:"total_dirs"`
+	TotalSize   int64 `json:"total_size"`
+	PublicFiles int64 `json:"public_files"`
+	RecentFiles int64 `json:"recent_files"` // 最近7天
 }
 
 // FileMoveRequest 文件移动请求

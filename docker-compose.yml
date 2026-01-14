@@ -22,6 +22,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    profiles:
+      - backend
 
   # Redis缓存
   redis:
@@ -39,6 +41,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    profiles:
+      - backend
 
   # 主应用程序
   app:
@@ -91,6 +95,24 @@ services:
       timeout: 10s
       retries: 3
     restart: unless-stopped
+    profiles:
+      - backend
+
+  # Web前端
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: cloud-storage-web
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+    networks:
+      - cloud-storage-network
+    restart: unless-stopped
+    profiles:
+      - frontend
 
   # Nginx反向代理（可选）
   nginx:
@@ -98,6 +120,7 @@ services:
     container_name: cloud-storage-nginx
     depends_on:
       - app
+      - web
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
@@ -106,6 +129,8 @@ services:
     networks:
       - cloud-storage-network
     restart: unless-stopped
+    profiles:
+      - full
 
   # 管理面板（可选）
   adminer:
@@ -120,6 +145,8 @@ services:
     networks:
       - cloud-storage-network
     restart: unless-stopped
+    profiles:
+      - backend
 
   # Redis管理（可选）
   redis-commander:
@@ -136,6 +163,8 @@ services:
     networks:
       - cloud-storage-network
     restart: unless-stopped
+    profiles:
+      - backend
 
 networks:
   cloud-storage-network:

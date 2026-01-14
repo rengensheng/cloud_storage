@@ -32,3 +32,8 @@ go.work.sum
 .vscode/
 .claude
 ./server
+
+# Docker
+*.log
+.dockerignore
+storage/*

@@ -40,10 +40,11 @@ func (UploadSession) TableName() string {
 }
 
 type ChunkUploadRequest struct {
-	UploadID   uuid.UUID `form:"upload_id" binding:"required"`
-	ChunkIndex int       `form:"chunk_index" binding:"required,min=0"`
-	ChunkSize  int64     `form:"chunk_size" binding:"required,min=1"`
-	ChunkHash  string    `form:"chunk_hash" binding:"required"`
+	UploadID    uuid.UUID `form:"-"`
+	UploadIDStr string    `form:"upload_id" binding:"required"`
+	ChunkIndex  int       `form:"chunk_index" binding:"required,min=0"`
+	ChunkSize   int64     `form:"chunk_size" binding:"required,min=1"`
+	ChunkHash   string    `form:"chunk_hash" binding:"required"`
 }
 
 type ChunkUploadResponse struct {

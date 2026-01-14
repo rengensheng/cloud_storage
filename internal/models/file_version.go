@@ -21,8 +21,8 @@ type FileVersion struct {
 	CreatedAt     time.Time `gorm:"autoCreateTime" json:"created_at"`
 
 	// 关联关系
-	File      File     `gorm:"foreignKey:FileID" json:"file,omitempty"`
-	Creator   User     `gorm:"foreignKey:CreatedBy" json:"creator,omitempty"`
+	File    File `gorm:"foreignKey:FileID" json:"file,omitempty"`
+	Creator User `gorm:"foreignKey:CreatedBy" json:"creator,omitempty"`
 }
 
 // TableName 指定表名
@@ -83,13 +83,15 @@ func (fv *FileVersion) GetStoragePath(basePath string) string {
 
 // FileVersionFilter 文件版本查询过滤器
 type FileVersionFilter struct {
-	FileID        *uuid.UUID `form:"file_id"`
+	FileID        *uuid.UUID `form:"-"`
+	FileIDStr     string     `form:"file_id"`
 	VersionNumber *int       `form:"version_number"`
-	CreatedBy     *uuid.UUID `form:"created_by"`
+	CreatedBy     *uuid.UUID `form:"-"`
+	CreatedByStr  string     `form:"created_by"`
 	CreatedAtFrom *time.Time `form:"created_at_from"`
 	CreatedAtTo   *time.Time `form:"created_at_to"`
-	Page          int        `form:"page" binding:"min=1"`
-	PageSize      int        `form:"page_size" binding:"min=1,max=100"`
+	Page          int        `form:"page" binding:"omitempty,min=1"`
+	PageSize      int        `form:"page_size" binding:"omitempty,min=1,max=100"`
 }
 
 // ApplyFilter 应用过滤器到查询
@@ -136,17 +138,17 @@ type VersionRestoreRequest struct {
 
 // VersionCompareResult 版本比较结果
 type VersionCompareResult struct {
-	Version1 FileVersionResponse `json:"version1"`
-	Version2 FileVersionResponse `json:"version2"`
+	Version1    FileVersionResponse `json:"version1"`
+	Version2    FileVersionResponse `json:"version2"`
 	Differences []VersionDifference `json:"differences"`
 }
 
 // VersionDifference 版本差异
 type VersionDifference struct {
-	Field     string      `json:"field"`
-	Value1    interface{} `json:"value1"`
-	Value2    interface{} `json:"value2"`
-	ChangeType string     `json:"change_type"` // added, modified, removed
+	Field      string      `json:"field"`
+	Value1     interface{} `json:"value1"`
+	Value2     interface{} `json:"value2"`
+	ChangeType string      `json:"change_type"` // added, modified, removed
 }
 
 // FileVersionStats 文件版本统计

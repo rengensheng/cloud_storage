@@ -1,0 +1,24 @@
+2026/01/14 09:53:26 Shutting down server...
+2026/01/14 09:53:26 Server exited gracefully
+2026/01/14 09:53:29 Starting cloud storage service in development mode
+2026/01/14 09:53:29 Database connection established successfully
+2026/01/14 09:53:29 Redis connection established successfully
+2026/01/14 09:53:29 Starting database migration...
+2026/01/14 09:53:32 Database migration completed successfully
+2026/01/14 09:53:32 Storage initialized at: ./storage/uploads
+2026/01/14 09:53:32 Server starting on 0.0.0.0:8080
+2026/01/14 09:55:56 Shutting down server...
+2026/01/14 09:55:56 Server exited gracefully
+2026/01/14 09:55:59 Starting cloud storage service in development mode
+2026/01/14 09:56:00 Database connection established successfully
+2026/01/14 09:56:01 Redis connection established successfully
+2026/01/14 09:56:01 Starting database migration...
+2026/01/14 09:56:09 Database migration completed successfully
+2026/01/14 09:56:09 Storage initialized at: ./storage/uploads
+2026/01/14 09:56:09 Server starting on 0.0.0.0:8080
+
+2026/01/14 10:23:44 [32m/Volumes/D/03_个人/项目/cloud-storage/internal/repositories/file_repository.go:87 [33mSLOW SQL >= 1s
+[0m[31;1m[4726.723ms] [33m[rows:9][35m SELECT * FROM "files" WHERE user_id = '1bd83aa4-58b5-4e29-b4c0-9cbc019fb232' AND "files"."deleted_at" IS NULL ORDER BY name asc LIMIT 20[0m
+
+2026/01/14 10:23:47 [32m/Volumes/D/03_个人/项目/cloud-storage/internal/repositories/file_repository.go:195 [33mSLOW SQL >= 1s
+[0m[31;1m[2599.320ms] [33m[rows:1][35m SELECT count(*) FROM "files" WHERE user_id = '1bd83aa4-58b5-4e29-b4c0-9cbc019fb232' AND "files"."deleted_at" IS NULL[0m

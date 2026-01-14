@@ -10,7 +10,10 @@ help:
 	@echo "  make test       - 运行测试"
 	@echo "  make clean      - 清理构建文件"
 	@echo "  make migrate    - 运行数据库迁移"
-	@echo "  make docker-up  - 启动Docker容器"
+	@echo "  make docker-up  - 启动Docker容器（全部）"
+	@echo "  make docker-backend    - 启动后端服务"
+	@echo "  make docker-frontend   - 启动前端服务"
+	@echo "  make docker-full      - 启动完整服务（包括Nginx）"
 	@echo "  make docker-down - 停止Docker容器"
 	@echo "  make lint       - 运行代码检查"
 	@echo "  make format     - 格式化代码"
@@ -48,10 +51,25 @@ migrate:
 	@echo "运行数据库迁移..."
 	go run ./cmd/migrate
 
-# 启动Docker容器
+# 启动Docker容器（全部）
 docker-up:
-	@echo "启动Docker容器..."
-	docker-compose up -d
+	@echo "启动Docker容器（全部）..."
+	docker-compose --profile backend --profile frontend up -d
+
+# 启动后端服务
+docker-backend:
+	@echo "启动后端服务..."
+	docker-compose --profile backend up -d
+
+# 启动前端服务
+docker-frontend:
+	@echo "启动前端服务..."
+	docker-compose --profile frontend up -d
+
+# 启动完整服务（包括Nginx）
+docker-full:
+	@echo "启动完整服务（包括Nginx代理）..."
+	docker-compose --profile backend --profile frontend --profile full up -d
 
 # 停止Docker容器
 docker-down:
@@ -166,6 +184,12 @@ docker-push:
 	@echo "推送Docker镜像..."
 	docker tag cloud-storage:latest your-registry/cloud-storage:latest
 	docker push your-registry/cloud-storage:latest
+
+# 重新构建Web前端
+docker-rebuild-web:
+	@echo "重新构建Web前端..."
+	docker-compose build --no-cache web
+	docker-compose up -d web
 
 # 初始化项目
 init: env deps

@@ -76,6 +76,15 @@ func (h *FileHandler) GetFileList(c *gin.Context) {
 		return
 	}
 
+	if filter.ParentIDStr != "" {
+		parentID, err := uuid.Parse(filter.ParentIDStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid parent_id format"})
+			return
+		}
+		filter.ParentID = &parentID
+	}
+
 	// 设置默认值
 	if filter.Page == 0 {
 		filter.Page = 1
@@ -239,6 +248,15 @@ func (h *FileHandler) UploadFile(c *gin.Context) {
 	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+
+	if req.ParentIDStr != "" {
+		parentID, err := uuid.Parse(req.ParentIDStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid parent_id format"})
+			return
+		}
+		req.ParentID = &parentID
 	}
 
 	file, err := h.fileService.UploadFile(c, userID, fileHeader, req)

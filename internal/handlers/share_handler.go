@@ -20,8 +20,8 @@ func NewShareHandler(shareService *services.ShareService) *ShareHandler {
 	}
 }
 
-func (h *ShareHandler) RegisterRoutes(router *gin.RouterGroup) {
-	shares := router.Group("/shares")
+func (h *ShareHandler) RegisterRoutes(protected *gin.RouterGroup, public *gin.RouterGroup) {
+	shares := protected.Group("/shares")
 	{
 		shares.POST("", h.CreateShare)
 		shares.GET("", h.GetUserShares)
@@ -32,10 +32,10 @@ func (h *ShareHandler) RegisterRoutes(router *gin.RouterGroup) {
 		shares.GET("/stats", h.GetShareStats)
 	}
 
-	public := router.Group("/s")
+	publicRoutes := public.Group("/s")
 	{
-		public.GET("/:token", h.AccessShare)
-		public.GET("/:token/download", h.DownloadSharedFile)
+		publicRoutes.GET("/:token", h.AccessShare)
+		publicRoutes.GET("/:token/download", h.DownloadSharedFile)
 	}
 }
 
@@ -73,6 +73,24 @@ func (h *ShareHandler) GetUserShares(c *gin.Context) {
 	if err := c.ShouldBindQuery(&filter); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+
+	if filter.UserIDStr != "" {
+		userID, err := uuid.Parse(filter.UserIDStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user_id format"})
+			return
+		}
+		filter.UserID = &userID
+	}
+
+	if filter.FileIDStr != "" {
+		fileID, err := uuid.Parse(filter.FileIDStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid file_id format"})
+			return
+		}
+		filter.FileID = &fileID
 	}
 
 	if filter.Page == 0 {

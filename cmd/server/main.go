@@ -103,12 +103,12 @@ func main() {
 		// 公开路由
 		public := api.Group("")
 		authHandler.RegisterRoutes(public)
-		shareHandler.RegisterRoutes(public)
 
 		// 需要认证的路由
 		protected := api.Group("")
 		protected.Use(authMiddleware.Authenticate())
 		fileHandler.RegisterRoutes(protected)
+		shareHandler.RegisterRoutes(protected, public)
 		adminHandler.RegisterRoutes(protected)
 	}
 

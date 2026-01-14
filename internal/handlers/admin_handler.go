@@ -39,6 +39,15 @@ func (h *OperationLogHandler) GetLogs(c *gin.Context) {
 		return
 	}
 
+	if filter.UserIDStr != "" {
+		userID, err := uuid.Parse(filter.UserIDStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user_id format"})
+			return
+		}
+		filter.UserID = &userID
+	}
+
 	if filter.Page == 0 {
 		filter.Page = 1
 	}

@@ -1,10 +1,17 @@
-import { Suspense, lazy } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { Suspense, lazy } from "react";
+import { Routes, Route } from "react-router-dom";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { PublicRoute, ProtectedRoute } from "../components/ProtectedRoute";
+import MainLayout from "../layouts/MainLayout";
 
-const Home = lazy(() => import('../pages/Home'));
-const About = lazy(() => import('../pages/About'));
-const NotFound = lazy(() => import('../pages/NotFound'));
+const Login = lazy(() => import("../pages/Login"));
+const Register = lazy(() => import("../pages/Register"));
+const Files = lazy(() => import("../pages/Files"));
+const Upload = lazy(() => import("../pages/Upload"));
+const Search = lazy(() => import("../pages/Search"));
+const Recycle = lazy(() => import("../pages/Recycle"));
+const Settings = lazy(() => import("../pages/Settings"));
+const NotFound = lazy(() => import("../pages/NotFound"));
 
 function LazyComponent({ children }: { children: React.ReactNode }) {
   return (
@@ -17,30 +24,76 @@ function LazyComponent({ children }: { children: React.ReactNode }) {
 export function Router() {
   return (
     <Routes>
-      <Route 
-        path="/" 
+      <Route
+        path="/login"
         element={
-          <LazyComponent>
-            <Home />
-          </LazyComponent>
-        } 
+          <PublicRoute>
+            <LazyComponent>
+              <Login />
+            </LazyComponent>
+          </PublicRoute>
+        }
       />
-      <Route 
-        path="/about" 
+      <Route
+        path="/register"
         element={
-          <LazyComponent>
-            <About />
-          </LazyComponent>
-        } 
+          <PublicRoute>
+            <LazyComponent>
+              <Register />
+            </LazyComponent>
+          </PublicRoute>
+        }
       />
-      <Route 
-        path="*" 
+
+      <Route
+        path="/"
         element={
-          <LazyComponent>
-            <NotFound />
-          </LazyComponent>
-        } 
-      />
+          <ProtectedRoute>
+            <MainLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route
+          index
+          element={
+            <LazyComponent>
+              <Files />
+            </LazyComponent>
+          }
+        />
+        <Route
+          path="upload"
+          element={
+            <LazyComponent>
+              <Upload />
+            </LazyComponent>
+          }
+        />
+        <Route
+          path="search"
+          element={
+            <LazyComponent>
+              <Search />
+            </LazyComponent>
+          }
+        />
+        <Route
+          path="recycle"
+          element={
+            <LazyComponent>
+              <Recycle />
+            </LazyComponent>
+          }
+        />
+        <Route
+          path="settings"
+          element={
+            <LazyComponent>
+              <Settings />
+            </LazyComponent>
+          }
+        />
+      </Route>
     </Routes>
   );
 }

@@ -151,7 +151,8 @@ func (ol *OperationLog) ToResponse() OperationLogResponse {
 
 // OperationLogFilter 操作日志查询过滤器
 type OperationLogFilter struct {
-	UserID        *uuid.UUID       `form:"user_id"`
+	UserID        *uuid.UUID       `form:"-"`
+	UserIDStr     string           `form:"user_id"`
 	Operation     *OperationType   `form:"operation"`
 	ResourceType  *ResourceType    `form:"resource_type"`
 	ResourceID    *string          `form:"resource_id"`
@@ -159,8 +160,8 @@ type OperationLogFilter struct {
 	IPAddress     *string          `form:"ip_address"`
 	CreatedAtFrom *time.Time       `form:"created_at_from"`
 	CreatedAtTo   *time.Time       `form:"created_at_to"`
-	Page          int              `form:"page" binding:"min=1"`
-	PageSize      int              `form:"page_size" binding:"min=1,max=100"`
+	Page          int              `form:"page" binding:"omitempty,min=1"`
+	PageSize      int              `form:"page_size" binding:"omitempty,min=1,max=100"`
 	SortBy        string           `form:"sort_by" binding:"oneof=created_at operation duration"`
 	SortOrder     string           `form:"sort_order" binding:"oneof=asc desc"`
 }

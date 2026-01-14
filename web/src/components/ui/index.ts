@@ -44,6 +44,12 @@ export type { MenuBarProps, MenuBarMenu, MenuBarItemData } from './MenuBar';
 export { Tabs } from './Tabs';
 export type { TabsProps, TabItem } from './Tabs';
 
+export { TabsControlled } from './TabsControlled';
+export type { TabsControlledProps, TabOption } from './TabsControlled';
+
+export { Progress } from './Progress';
+export type { ProgressProps } from './Progress';
+
 // Table Components
 export { Table } from './Table';
 export type { TableProps } from './Table';

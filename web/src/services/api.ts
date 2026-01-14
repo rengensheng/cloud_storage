@@ -1,4 +1,4 @@
-import {
+import type {
   LoginRequest,
   RegisterRequest,
   AuthResponse,
@@ -19,7 +19,6 @@ import {
   SearchParams,
   FileListParams,
   LogParams,
-  ApiResponse,
   AdminUserListResponse,
   AdminUser,
 } from '../types/api';
@@ -32,7 +31,7 @@ class ApiClient {
     return token ? { Authorization: `Bearer ${token}` } : {};
   }
 
-  private async request<T>(
+  async request<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
@@ -73,7 +72,7 @@ class ApiClient {
   }
 
   async uploadFile(
-    file: File,
+    file: any,
     parentId?: string,
     isPublic: boolean = false,
     override: boolean = false
@@ -185,7 +184,14 @@ export const fileApi = {
     if (params?.sort_by) searchParams.append('sort_by', params.sort_by);
     if (params?.sort_order) searchParams.append('sort_order', params.sort_order);
 
-    return apiClient.request<FileListResponse>(`/files?${searchParams.toString()}`);
+    const response = await apiClient.request<any>(`/files?${searchParams.toString()}`);
+    return {
+      files: response.files || [],
+      total: response.total || 0,
+      page: response.page || 1,
+      page_size: response.size || 20,
+      total_pages: Math.ceil((response.total || 0) / (response.size || 20)),
+    };
   },
 
   getFile: async (id: string): Promise<File> => {
@@ -230,7 +236,8 @@ export const fileApi = {
   },
 
   getVersions: async (id: string): Promise<FileVersion[]> => {
-    return apiClient.request<FileVersion[]>(`/files/${id}/versions`);
+    const response = await apiClient.request<{ versions: FileVersion[] }>(`/files/${id}/versions`);
+    return response.versions || [];
   },
 
   restoreVersion: async (id: string, versionNumber: number): Promise<File> => {
@@ -259,7 +266,13 @@ export const shareApi = {
   },
 
   getShares: async (page: number = 1, pageSize: number = 20): Promise<ShareListResponse> => {
-    return apiClient.request<ShareListResponse>(`/shares?page=${page}&page_size=${pageSize}`);
+    const response = await apiClient.request<any>(`/shares?page=${page}&page_size=${pageSize}`);
+    return {
+      shares: response.shares || [],
+      total: response.total || 0,
+      page: response.page || 1,
+      page_size: response.size || 20,
+    };
   },
 
   getShare: async (id: string): Promise<Share> => {
@@ -288,12 +301,13 @@ export const shareApi = {
     return apiClient.request<ShareStats>('/shares/stats');
   },
 
-  accessShare: async (token: string, password?: string): Promise<any> => {
+  accessShare: async (token: string, password?: string): Promise<Share> => {
     const body = password ? JSON.stringify({ password }) : undefined;
-    return apiClient.request<any>(`/s/${token}`, {
+    const response = await apiClient.request<{ share: Share }>(`/s/${token}`, {
       method: 'POST',
       body,
     });
+    return response.share;
   },
 
   downloadSharedFile: async (token: string): Promise<Blob> => {
@@ -306,13 +320,26 @@ export const shareApi = {
       throw new Error(error.error || `HTTP error! status: ${response.status}`);
     }
 
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      const error = await response.json();
+      throw new Error(error.error || 'Download failed');
+    }
+
     return response.blob();
   },
 };
 
 export const recycleApi = {
   getRecycleFiles: async (page: number = 1, pageSize: number = 20): Promise<FileListResponse> => {
-    return apiClient.request<FileListResponse>(`/recycle?page=${page}&page_size=${pageSize}`);
+    const response = await apiClient.request<any>(`/recycle?page=${page}&page_size=${pageSize}`);
+    return {
+      files: response.files || [],
+      total: response.total || 0,
+      page: response.page || 1,
+      page_size: response.size || 20,
+      total_pages: Math.ceil((response.total || 0) / (response.size || 20)),
+    };
   },
 
   restoreFile: async (id: string): Promise<File> => {
@@ -332,7 +359,14 @@ export const searchApi = {
     if (params.page) searchParams.append('page', params.page.toString());
     if (params.page_size) searchParams.append('page_size', params.page_size.toString());
 
-    return apiClient.request<FileListResponse>(`/search?${searchParams.toString()}`);
+    const response = await apiClient.request<any>(`/search?${searchParams.toString()}`);
+    return {
+      files: response.files || [],
+      total: response.total || 0,
+      page: response.page || 1,
+      page_size: response.size || 20,
+      total_pages: Math.ceil((response.total || 0) / (response.size || 20)),
+    };
   },
 };
 
@@ -357,7 +391,13 @@ export const logApi = {
     if (params.start_date) searchParams.append('start_date', params.start_date);
     if (params.end_date) searchParams.append('end_date', params.end_date);
 
-    return apiClient.request<OperationLogResponse>(`/logs?${searchParams.toString()}`);
+    const response = await apiClient.request<any>(`/logs?${searchParams.toString()}`);
+    return {
+      logs: response.logs || [],
+      total: response.total || 0,
+      page: response.page || 1,
+      page_size: response.size || 50,
+    };
   },
 
   getStats: async (): Promise<any> => {
@@ -375,7 +415,13 @@ export const adminApi = {
   },
 
   getUsers: async (page: number = 1, pageSize: number = 20): Promise<AdminUserListResponse> => {
-    return apiClient.request<AdminUserListResponse>(`/admin/users?page=${page}&page_size=${pageSize}`);
+    const response = await apiClient.request<any>(`/admin/users?page=${page}&page_size=${pageSize}`);
+    return {
+      users: response.users || [],
+      total: response.total || 0,
+      page: response.page || 1,
+      page_size: response.size || 20,
+    };
   },
 
   getUser: async (id: string): Promise<AdminUser> => {

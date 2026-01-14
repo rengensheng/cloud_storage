@@ -11,25 +11,25 @@ import (
 type ShareAccessType string
 
 const (
-	ShareAccessView   ShareAccessType = "view"
+	ShareAccessView     ShareAccessType = "view"
 	ShareAccessDownload ShareAccessType = "download"
-	ShareAccessEdit   ShareAccessType = "edit"
+	ShareAccessEdit     ShareAccessType = "edit"
 )
 
 // Share 分享模型
 type Share struct {
-	ID            uuid.UUID      `gorm:"type:uuid;primary_key;default:gen_random_uuid()" json:"id"`
-	FileID        uuid.UUID      `gorm:"type:uuid;not null;index" json:"file_id"`
-	UserID        uuid.UUID      `gorm:"type:uuid;not null;index" json:"user_id"`
-	ShareToken    string         `gorm:"type:varchar(32);uniqueIndex;not null" json:"share_token"`
-	PasswordHash  *string        `gorm:"type:varchar(255)" json:"-"`
+	ID            uuid.UUID       `gorm:"type:uuid;primary_key;default:gen_random_uuid()" json:"id"`
+	FileID        uuid.UUID       `gorm:"type:uuid;not null;index" json:"file_id"`
+	UserID        uuid.UUID       `gorm:"type:uuid;not null;index" json:"user_id"`
+	ShareToken    string          `gorm:"type:varchar(32);uniqueIndex;not null" json:"share_token"`
+	PasswordHash  *string         `gorm:"type:varchar(255)" json:"-"`
 	AccessType    ShareAccessType `gorm:"type:varchar(20);default:'view'" json:"access_type"`
-	ExpiresAt     *time.Time     `gorm:"index" json:"expires_at,omitempty"`
-	MaxDownloads  *int           `json:"max_downloads,omitempty"`
-	DownloadCount int            `gorm:"default:0" json:"download_count"`
-	IsActive      bool           `gorm:"default:true" json:"is_active"`
-	CreatedAt     time.Time      `gorm:"autoCreateTime" json:"created_at"`
-	UpdatedAt     time.Time      `gorm:"autoUpdateTime" json:"updated_at"`
+	ExpiresAt     *time.Time      `gorm:"index" json:"expires_at,omitempty"`
+	MaxDownloads  *int            `json:"max_downloads,omitempty"`
+	DownloadCount int             `gorm:"default:0" json:"download_count"`
+	IsActive      bool            `gorm:"default:true" json:"is_active"`
+	CreatedAt     time.Time       `gorm:"autoCreateTime" json:"created_at"`
+	UpdatedAt     time.Time       `gorm:"autoUpdateTime" json:"updated_at"`
 
 	// 关联关系
 	File File `gorm:"foreignKey:FileID" json:"file,omitempty"`
@@ -51,45 +51,45 @@ func (s *Share) BeforeCreate(tx *gorm.DB) error {
 
 // ShareCreateRequest 分享创建请求
 type ShareCreateRequest struct {
-	FileID       uuid.UUID       `json:"file_id" binding:"required"`
-	Password     *string         `json:"password,omitempty"`
-	AccessType   ShareAccessType `json:"access_type" binding:"oneof=view download edit"`
-	ExpiresInDays *int           `json:"expires_in_days,omitempty" binding:"min=1,max=365"`
-	MaxDownloads *int            `json:"max_downloads,omitempty" binding:"min=1"`
+	FileID        uuid.UUID       `json:"file_id" binding:"required"`
+	Password      *string         `json:"password,omitempty"`
+	AccessType    ShareAccessType `json:"access_type" binding:"oneof=view download edit"`
+	ExpiresInDays *int            `json:"expires_in_days,omitempty" binding:"omitempty,min=1,max=365"`
+	MaxDownloads  *int            `json:"max_downloads,omitempty" binding:"omitempty,min=1"`
 }
 
 // ShareUpdateRequest 分享更新请求
 type ShareUpdateRequest struct {
-	Password     *string         `json:"password,omitempty"`
-	AccessType   *ShareAccessType `json:"access_type"`
-	IsActive     *bool           `json:"is_active"`
-	ExpiresInDays *int           `json:"expires_in_days,omitempty" binding:"min=1,max=365"`
-	MaxDownloads *int            `json:"max_downloads,omitempty" binding:"min=1"`
+	Password      *string          `json:"password,omitempty"`
+	AccessType    *ShareAccessType `json:"access_type"`
+	IsActive      *bool            `json:"is_active"`
+	ExpiresInDays *int             `json:"expires_in_days,omitempty" binding:"omitempty,min=1,max=365"`
+	MaxDownloads  *int             `json:"max_downloads,omitempty" binding:"omitempty,min=1"`
 }
 
 // ShareResponse 分享响应
 type ShareResponse struct {
-	ID            uuid.UUID      `json:"id"`
-	FileID        uuid.UUID      `json:"file_id"`
-	UserID        uuid.UUID      `json:"user_id"`
-	ShareToken    string         `json:"share_token"`
+	ID            uuid.UUID       `json:"id"`
+	FileID        uuid.UUID       `json:"file_id"`
+	UserID        uuid.UUID       `json:"user_id"`
+	ShareToken    string          `json:"share_token"`
 	AccessType    ShareAccessType `json:"access_type"`
-	ExpiresAt     *time.Time     `json:"expires_at,omitempty"`
-	MaxDownloads  *int           `json:"max_downloads,omitempty"`
-	DownloadCount int            `json:"download_count"`
-	IsActive      bool           `json:"is_active"`
-	CreatedAt     time.Time      `json:"created_at"`
-	UpdatedAt     time.Time      `json:"updated_at"`
+	ExpiresAt     *time.Time      `json:"expires_at,omitempty"`
+	MaxDownloads  *int            `json:"max_downloads,omitempty"`
+	DownloadCount int             `json:"download_count"`
+	IsActive      bool            `json:"is_active"`
+	CreatedAt     time.Time       `json:"created_at"`
+	UpdatedAt     time.Time       `json:"updated_at"`
 
 	// 可选的关联数据
-	FileName     string `json:"file_name,omitempty"`
-	FileSize     int64  `json:"file_size,omitempty"`
-	FileType     string `json:"file_type,omitempty"`
-	UserName     string `json:"user_name,omitempty"`
-	ShareURL     string `json:"share_url,omitempty"`
-	HasPassword  bool   `json:"has_password"`
-	IsExpired    bool   `json:"is_expired"`
-	RemainingDownloads *int `json:"remaining_downloads,omitempty"`
+	FileName           string `json:"file_name,omitempty"`
+	FileSize           int64  `json:"file_size,omitempty"`
+	FileType           string `json:"file_type,omitempty"`
+	UserName           string `json:"user_name,omitempty"`
+	ShareURL           string `json:"share_url,omitempty"`
+	HasPassword        bool   `json:"has_password"`
+	IsExpired          bool   `json:"is_expired"`
+	RemainingDownloads *int   `json:"remaining_downloads,omitempty"`
 }
 
 // ToResponse 转换为响应格式
@@ -113,19 +113,19 @@ func (s *Share) ToResponse() ShareResponse {
 	}
 
 	return ShareResponse{
-		ID:            s.ID,
-		FileID:        s.FileID,
-		UserID:        s.UserID,
-		ShareToken:    s.ShareToken,
-		AccessType:    s.AccessType,
-		ExpiresAt:     s.ExpiresAt,
-		MaxDownloads:  s.MaxDownloads,
-		DownloadCount: s.DownloadCount,
-		IsActive:      s.IsActive,
-		CreatedAt:     s.CreatedAt,
-		UpdatedAt:     s.UpdatedAt,
-		HasPassword:   hasPassword,
-		IsExpired:     isExpired,
+		ID:                 s.ID,
+		FileID:             s.FileID,
+		UserID:             s.UserID,
+		ShareToken:         s.ShareToken,
+		AccessType:         s.AccessType,
+		ExpiresAt:          s.ExpiresAt,
+		MaxDownloads:       s.MaxDownloads,
+		DownloadCount:      s.DownloadCount,
+		IsActive:           s.IsActive,
+		CreatedAt:          s.CreatedAt,
+		UpdatedAt:          s.UpdatedAt,
+		HasPassword:        hasPassword,
+		IsExpired:          isExpired,
 		RemainingDownloads: remainingDownloads,
 	}
 }
@@ -173,15 +173,17 @@ func (s *Share) IncrementDownloadCount() error {
 
 // ShareFilter 分享查询过滤器
 type ShareFilter struct {
-	UserID        *uuid.UUID      `form:"user_id"`
-	FileID        *uuid.UUID      `form:"file_id"`
+	UserID        *uuid.UUID       `form:"-"`
+	FileID        *uuid.UUID       `form:"-"`
+	UserIDStr     string           `form:"user_id"`
+	FileIDStr     string           `form:"file_id"`
 	AccessType    *ShareAccessType `form:"access_type"`
-	IsActive      *bool           `form:"is_active"`
-	Expired       *bool           `form:"expired"`
-	CreatedAtFrom *time.Time      `form:"created_at_from"`
-	CreatedAtTo   *time.Time      `form:"created_at_to"`
-	Page          int             `form:"page" binding:"min=1"`
-	PageSize      int             `form:"page_size" binding:"min=1,max=100"`
+	IsActive      *bool            `form:"is_active"`
+	Expired       *bool            `form:"expired"`
+	CreatedAtFrom *time.Time       `form:"created_at_from"`
+	CreatedAtTo   *time.Time       `form:"created_at_to"`
+	Page          int              `form:"page" binding:"omitempty,min=1"`
+	PageSize      int              `form:"page_size" binding:"omitempty,min=1,max=100"`
 }
 
 // ApplyFilter 应用过滤器到查询
@@ -229,11 +231,11 @@ func (f *ShareFilter) ApplyFilter(db *gorm.DB) *gorm.DB {
 
 // ShareStats 分享统计信息
 type ShareStats struct {
-	TotalShares     int64 `json:"total_shares"`
-	ActiveShares    int64 `json:"active_shares"`
-	ExpiredShares   int64 `json:"expired_shares"`
-	TotalDownloads  int64 `json:"total_downloads"`
-	PublicFiles     int64 `json:"public_files"` // 通过分享可访问的文件
+	TotalShares    int64 `json:"total_shares"`
+	ActiveShares   int64 `json:"active_shares"`
+	ExpiredShares  int64 `json:"expired_shares"`
+	TotalDownloads int64 `json:"total_downloads"`
+	PublicFiles    int64 `json:"public_files"` // 通过分享可访问的文件
 }
 
 // ShareAccessRequest 分享访问请求
@@ -244,12 +246,12 @@ type ShareAccessRequest struct {
 
 // ShareAccessResponse 分享访问响应
 type ShareAccessResponse struct {
-	Share     ShareResponse `json:"share"`
-	File      FileResponse  `json:"file"`
-	AccessURL string        `json:"access_url"`
-	CanDownload bool        `json:"can_download"`
-	CanEdit     bool        `json:"can_edit"`
-	ExpiresIn   *string     `json:"expires_in,omitempty"` // 剩余时间，如 "3天"
+	Share       ShareResponse `json:"share"`
+	File        FileResponse  `json:"file"`
+	AccessURL   string        `json:"access_url"`
+	CanDownload bool          `json:"can_download"`
+	CanEdit     bool          `json:"can_edit"`
+	ExpiresIn   *string       `json:"expires_in,omitempty"` // 剩余时间，如 "3天"
 }
 
 // ShareLinkInfo 分享链接信息
